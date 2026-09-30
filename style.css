@@ -115,7 +115,7 @@ ul, ol { list-style: none; }
 }
 @keyframes spinRing { to { transform: rotate(360deg); } }
 .profile__avatar img { position: relative; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: var(--bg); transition: transform .5s var(--ease-out); }
-.profile__avatar:hover img { transform: scale(1.08) rotate(-4deg); }
+@media (hover: hover) { .profile__avatar:hover img { transform: scale(1.08) rotate(-4deg); } }
 .profile__name {
   margin: 0; font-weight: 400;
   font-family: "Russo One", sans-serif; text-transform: uppercase;
@@ -139,8 +139,8 @@ ul, ol { list-style: none; }
 .is-ready .social:nth-child(2) { animation-delay: 1.2s; }
 @keyframes popIn { to { opacity: 1; scale: 1; } }
 .dots { scale: 1 !important; }
-.social:hover { transform: translateY(-4px) scale(1.08); filter: drop-shadow(0 6px 18px rgba(58,158,224,.7)); }
-.social:hover .social__icon { animation: wiggle .5s ease; }
+@media (hover: hover) { .social:hover { transform: translateY(-4px) scale(1.08); filter: drop-shadow(0 6px 18px rgba(58,158,224,.7)); } }
+@media (hover: hover) { .social:hover .social__icon { animation: wiggle .5s ease; } }
 @keyframes wiggle { 30% { transform: rotate(-14deg); } 60% { transform: rotate(10deg); } }
 
 /* ============ ВИТРИНА / НОУТБУК ============ */
@@ -209,9 +209,9 @@ ul, ol { list-style: none; }
 .arrow--prev { left: 0; }
 .arrow--next { right: 0; }
 .arrow--prev .arrow__icon { transform: scaleX(-1); }
-.arrow:hover { transform: scale(1.12); filter: drop-shadow(0 0 16px rgba(58,158,224,.8)); }
-.arrow--next:hover .arrow__icon { animation: nudgeR .7s ease infinite; }
-.arrow--prev:hover .arrow__icon { animation: nudgeL .7s ease infinite; }
+@media (hover: hover) { .arrow:hover { transform: scale(1.12); filter: drop-shadow(0 0 16px rgba(58,158,224,.8)); } }
+@media (hover: hover) { .arrow--next:hover .arrow__icon { animation: nudgeR .7s ease infinite; } }
+@media (hover: hover) { .arrow--prev:hover .arrow__icon { animation: nudgeL .7s ease infinite; } }
 .arrow:active { transform: scale(.92); }
 @keyframes nudgeR { 50% { transform: translateX(4px); } }
 @keyframes nudgeL { 0%,100% { transform: scaleX(-1); } 50% { transform: scaleX(-1) translateX(4px); } }
@@ -229,7 +229,7 @@ ul, ol { list-style: none; }
   background: rgba(111,143,208,.35);
   transition: width .5s var(--ease-out), background .3s;
 }
-.dot:hover { background: rgba(111,143,208,.7); }
+@media (hover: hover) { .dot:hover { background: rgba(111,143,208,.7); } }
 .dot.is-active { width: 44px; background: rgba(58,158,224,.3); }
 .dot span { position: absolute; inset: 0; transform-origin: 0 50%; transform: scaleX(0); background: linear-gradient(90deg, var(--accent-2), var(--accent)); border-radius: inherit; }
 .dot.is-active span { animation: fill var(--autoplay, 6s) linear forwards; }
@@ -253,7 +253,7 @@ ul, ol { list-style: none; }
   background: rgba(58,158,224,.08); border: 1px solid rgba(58,158,224,.28);
   transition: transform .3s var(--ease-out), background .3s, border-color .3s;
 }
-.chips li:hover { transform: translateY(-3px); background: rgba(58,158,224,.22); border-color: var(--accent); }
+@media (hover: hover) { .chips li:hover { transform: translateY(-3px); background: rgba(58,158,224,.22); border-color: var(--accent); } }
 .chips.in li { animation: chipIn .6s var(--ease-out) both; }
 .chips.in li:nth-child(n) { animation-delay: calc(var(--n) * 60ms + .2s); }
 @keyframes chipIn { from { opacity: 0; transform: translateY(14px) scale(.9); } }
@@ -272,19 +272,19 @@ ul, ol { list-style: none; }
 .list h3, .tl h3 { font-size: 1em; font-weight: 500; color: var(--text); }
 .list p, .tl p { color: var(--muted); }
 .list li { transition: transform .4s var(--ease-out); }
-.list li:hover { transform: translateX(8px); }
-.list li:hover::before { background: var(--orange); box-shadow: 0 0 12px var(--orange); }
+@media (hover: hover) { .list li:hover { transform: translateX(8px); } }
+@media (hover: hover) { .list li:hover::before { background: var(--orange); box-shadow: 0 0 12px var(--orange); } }
 
 .tank { position: relative; cursor: pointer; justify-self: end; width: 100%; max-width: 666px; -webkit-tap-highlight-color: transparent; }
 .tank__body { position: relative; z-index: 1; animation: idle 3.2s ease-in-out infinite; }
 .tank__body img { width: 100%; }
 @keyframes idle { 0%,100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-8px) rotate(-.6deg); } }
-.tank:hover .tank__body img { animation: rumble .12s linear infinite; }
+@media (hover: hover) { .tank:hover .tank__body img { animation: rumble .12s linear infinite; } }
 @keyframes rumble { 0%,100% { transform: translate(0,0); } 25% { transform: translate(.6px,-.6px); } 75% { transform: translate(-.6px,.4px); } }
 .tank.fire .tank__body img { animation: recoil .45s var(--ease-out); }
 @keyframes recoil { 0% { transform: none; } 12% { transform: translate(20px, 3px) rotate(1.2deg); } 100% { transform: none; } }
 .tank__glow { position: absolute; inset: 15% 5% 5%; z-index: 0; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,138,43,.26), rgba(255,138,43,.08) 60%, transparent); transition: opacity .4s; opacity: .7; }
-.tank:hover .tank__glow { opacity: 1; }
+@media (hover: hover) { .tank:hover .tank__glow { opacity: 1; } }
 .tank__shadow { position: absolute; left: 12%; right: 6%; bottom: -2%; height: 10%; background: radial-gradient(closest-side, rgba(0,0,0,.6), transparent); animation: shadowPulse 3.2s ease-in-out infinite; }
 @keyframes shadowPulse { 50% { transform: scaleX(.9); opacity: .7; } }
 .reveal-tank { opacity: 0; transform: translateX(22%); transition: opacity 1s ease, transform 1.4s cubic-bezier(.34, 1.4, .64, 1); }
@@ -302,7 +302,7 @@ ul, ol { list-style: none; }
   color: #1a406b; pointer-events: none;
   padding-top: 2px; /* подпись чуть ниже центра — оптически ровнее */
 }
-.lang__toggle:hover .lang__label { animation: wiggle .5s ease; }
+@media (hover: hover) { .lang__toggle:hover .lang__label { animation: wiggle .5s ease; } }
 .lang__menu {
   position: absolute; top: calc(100% + clamp(8px, .9vw, 16px)); left: 0;
   display: flex; flex-direction: column; gap: clamp(8px, .9vw, 16px);
@@ -317,7 +317,7 @@ ul, ol { list-style: none; }
 .lang.is-open .lang__menu { pointer-events: auto; }
 .lang.is-open .lang__opt { opacity: 1; transform: none; }
 .lang.is-open .lang__opt:nth-child(2) { transition-delay: .05s; }
-.lang__opt:hover { filter: drop-shadow(0 6px 18px rgba(58,158,224,.7)); transform: translateY(-2px) scale(1.06); }
+@media (hover: hover) { .lang__opt:hover { filter: drop-shadow(0 6px 18px rgba(58,158,224,.7)); transform: translateY(-2px) scale(1.06); } }
 .lang__opt { isolation: isolate; }
 /* кольцо выбранного языка — как у аватара: двухцветное, вращается */
 .lang__opt.is-current::before {
@@ -333,6 +333,12 @@ ul, ol { list-style: none; }
   .socials { gap: 6px; }
   .lang__label { font-size: 12px; }
 }
+
+/* зона наведения для плашки: весь экран ноутбука, НЕ наклоняется вместе с ним —
+   иначе у краёв при наклоне ховер то пропадает, то появляется */
+.screen-hit { position: absolute; z-index: 6; left: 9.176%; top: 2.848%; width: 82.272%; height: 87.13%; }
+/* убираем серую вспышку при тапе на телефонах */
+button, a, .laptop-wrap { -webkit-tap-highlight-color: transparent; }
 
 /* плашка с описанием экрана */
 .laptop__screen { touch-action: manipulation; }
@@ -394,7 +400,7 @@ ul, ol { list-style: none; }
   animation: float 5s ease-in-out infinite; animation-delay: calc(var(--i) * -1.4s);
 }
 .logo__card img { width: 100%; max-width: 455px; margin: 0 auto; filter: drop-shadow(0 20px 30px rgba(0,0,0,.5)); transition: filter .4s; }
-.logo:hover .logo__card img { filter: drop-shadow(0 26px 40px rgba(0,0,0,.6)) drop-shadow(0 0 30px rgba(58,158,224,.35)); }
+@media (hover: hover) { .logo:hover .logo__card img { filter: drop-shadow(0 26px 40px rgba(0,0,0,.6)) drop-shadow(0 0 30px rgba(58,158,224,.35)); } }
 @keyframes float { 50% { translate: 0 -12px; } }
 .logo__shine {
   position: absolute; pointer-events: none; mix-blend-mode: overlay; border-radius: 50%;
@@ -402,7 +408,7 @@ ul, ol { list-style: none; }
   opacity: 0; transition: opacity .3s;
   inset: 14%;
 }
-.logo:hover .logo__shine { opacity: 1; }
+@media (hover: hover) { .logo:hover .logo__shine { opacity: 1; } }
 .reveal-logo { opacity: 0; transform: scale(.5) rotate(-120deg); transition: opacity .8s ease, transform 1.3s cubic-bezier(.34, 1.3, .64, 1); transition-delay: calc(var(--i) * .15s); }
 .reveal-logo.in { opacity: 1; transform: none; }
 
@@ -417,11 +423,11 @@ ul, ol { list-style: none; }
   transition: transform .4s var(--ease-out), box-shadow .4s;
 }
 .btn::before { content: ""; position: absolute; inset: -3px; z-index: -1; border-radius: inherit; box-shadow: 0 0 28px 6px rgba(58,158,224,.55), 0 0 60px 10px rgba(255,138,43,.18); opacity: 0; transition: opacity .4s; }
-.btn:hover { box-shadow: 0 16px 40px rgba(58,158,224,.6), inset 0 1px 0 rgba(255,255,255,.3); }
-.btn:hover::before { opacity: .8; animation: glowPulse 2.6s ease-in-out infinite; }
+@media (hover: hover) { .btn:hover { box-shadow: 0 16px 40px rgba(58,158,224,.6), inset 0 1px 0 rgba(255,255,255,.3); } }
+@media (hover: hover) { .btn:hover::before { opacity: .8; animation: glowPulse 2.6s ease-in-out infinite; } }
 @keyframes glowPulse { 0%, 100% { opacity: .45; transform: scale(1); } 50% { opacity: 1; transform: scale(1.06, 1.12); } }
 .btn__label { position: relative; z-index: 1; transition: letter-spacing .4s var(--ease-out); }
-.btn:hover .btn__label { letter-spacing: .06em; }
+@media (hover: hover) { .btn:hover .btn__label { letter-spacing: .06em; } }
 .btn__shine { position: absolute; inset: 0; background: linear-gradient(110deg, transparent 35%, rgba(255,255,255,.4) 50%, transparent 65%); transform: translateX(-120%); animation: shine 3.5s ease-in-out infinite 1s; }
 @keyframes shine { 0% { transform: translateX(-120%); } 40%, 100% { transform: translateX(120%); } }
 .btn:active { transform: scale(.96) !important; }
@@ -432,7 +438,7 @@ ul, ol { list-style: none; }
 /* линия ровно по ширине колонки (от левого края заголовков до правого края ноутбука) */
 .footer::before { content: ""; position: absolute; top: 0; left: var(--gutter); right: var(--gutter); height: 1px; background: rgba(111,143,208,.22); }
 .footer__up { transition: color .3s; }
-.footer__up:hover { color: var(--text); }
+@media (hover: hover) { .footer__up:hover { color: var(--text); } }
 
 /* ============ АДАПТИВ ============ */
 @media (max-width: 900px) {

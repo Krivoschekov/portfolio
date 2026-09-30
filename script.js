@@ -71,6 +71,7 @@
   const glare = $('.screen__glare'), scan = $('.screen__scan');
   let current = 0, timer = null;
   const screenEl = $('#screen');
+  const screenHit = $('#screenHit');
 
   /* плашка с названием и описанием экрана */
   const caption = $('#caption'), capTitle = $('#capTitle'), capDesc = $('#capDesc');
@@ -161,8 +162,9 @@
   laptopWrap.addEventListener('mouseleave', () => { showcase.classList.remove('is-paused'); startAutoplay(); });
   // плашка: на компьютере — при наведении на экран ноутбука
   if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    screenEl.addEventListener('mouseenter', () => showCaption());
-    screenEl.addEventListener('mouseleave', hideCaption);
+    // зона наведения — неподвижный слой поверх экрана (не зависит от наклона ноутбука)
+    screenHit.addEventListener('mouseenter', () => showCaption());
+    screenHit.addEventListener('mouseleave', hideCaption);
   }
 
   // клавиатура
@@ -203,7 +205,7 @@
       go(current + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1); return;
     }
     // тап по экрану: показать плашку (сама спрячется через 10 с) / спрятать
-    if (Math.abs(dx) > 10 || Math.abs(dy) > 10 || dt > 500 || !screenEl.contains(e.target)) return;
+    if (Math.abs(dx) > 10 || Math.abs(dy) > 10 || dt > 500 || !(screenHit.contains(e.target) || screenEl.contains(e.target))) return;
     if (caption.classList.contains('is-open')) { hideCaption(); showcase.classList.remove('is-paused'); startAutoplay(); }
     else {
       showCaption(10000);
