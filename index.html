@@ -38,17 +38,27 @@
 
     <div class="container hero__inner">
       <div class="topbar">
-        <a class="profile__avatar" href="#top" aria-label="Наверх"><img src="avatar.png" alt="Алексей Кривощеков"></a>
+        <a class="profile__avatar" href="#top" aria-label="Наверх" data-i18n-attr="aria-label:up"><img src="avatar.png" alt="Алексей Кривощеков" data-i18n-attr="alt:name"></a>
         <div class="topbar__main">
           <div class="topbar__row">
-            <h1 class="profile__name" data-split>Алексей Кривощеков</h1>
-            <nav class="socials" aria-label="Контакты">
+            <h1 class="profile__name" data-split data-i18n="name">Алексей Кривощеков</h1>
+            <nav class="socials" aria-label="Контакты" data-i18n-attr="aria-label:contacts">
               <a class="social" href="https://t.me/nikto_nigde_nikogda" target="_blank" rel="noopener" aria-label="Telegram">
                 <img src="button_circle.png" alt=""><img class="social__icon" src="icon_telegram.png" alt="">
               </a>
               <a class="social" href="https://www.linkedin.com/in/alexey-krivoschekov-216692b4/" target="_blank" rel="noopener" aria-label="LinkedIn">
                 <img src="button_circle.png" alt=""><img class="social__icon" src="icon_linkedin.png" alt="">
               </a>
+              <!-- выбор языка: кнопка + выпадающие RU / EN -->
+              <div class="lang" id="lang">
+                <button class="social lang__toggle" id="langToggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="langMenu" aria-label="Язык / Language">
+                  <img src="button_circle.png" alt=""><span class="lang__label" id="langLabel">RU</span>
+                </button>
+                <div class="lang__menu" id="langMenu" role="menu">
+                  <button class="lang__opt" type="button" role="menuitemradio" data-lang="ru" aria-label="Русский"><img src="button_circle.png" alt=""><span class="lang__label">RU</span></button>
+                  <button class="lang__opt" type="button" role="menuitemradio" data-lang="en" aria-label="English"><img src="button_circle.png" alt=""><span class="lang__label">EN</span></button>
+                </div>
+              </div>
             </nav>
           </div>
           <span class="profile__role">GameDev UI Designer</span>
@@ -56,9 +66,9 @@
       </div>
 
       <!-- ноутбук со слайдером -->
-      <section class="showcase" aria-roledescription="carousel" aria-label="Кейсы">
+      <section class="showcase" aria-roledescription="carousel" aria-label="Кейсы" data-i18n-attr="aria-label:cases">
        <div class="stage">
-        <button class="arrow arrow--prev" id="prevBtn" aria-label="Предыдущий слайд">
+        <button class="arrow arrow--prev" id="prevBtn" aria-label="Предыдущий слайд" data-i18n-attr="aria-label:prev">
           <img src="button_circle.png" alt=""><img class="arrow__icon" src="icon_arrow_right.png" alt="">
         </button>
 
@@ -67,53 +77,84 @@
             <img class="laptop__frame" src="laptop.png" alt="">
             <div class="laptop__screen" id="screen">
               <!-- Слайды: laptop_screen_1..15.png (1318×825).
-                   data-title — название экрана на плашке, data-desc — описание.
+                   data-title / data-desc — название и описание на плашке (русский),
+                   data-title-en / data-desc-en — то же на английском.
                    Чтобы добавить слайд, допишите такую же строку <img class="slide" ...> -->
               <img class="slide is-active" src="laptop_screen_1.png" alt="Кейс 1"
                    data-title="IMTANK.COM"
-                   data-desc="Боевой HUD для кроссплатформенной Action MMO imtank.com. Разработка визуального стиля, полная отрисовка UI-элементов и создание интуитивно понятного боевого интерфейса с вёрсткой под ПК и мобильные устройства.">
+                   data-desc="Боевой HUD для кроссплатформенной Action MMO imtank.com. Разработка визуального стиля, полная отрисовка UI-элементов и создание интуитивно понятного боевого интерфейса с вёрсткой под ПК и мобильные устройства."
+                   data-title-en="IMTANK.COM"
+                   data-desc-en="Battle HUD for imtank.com, a cross-platform action MMO. Visual style development, full rendering of UI elements and an intuitive combat interface laid out for both PC and mobile.">
               <img class="slide" src="laptop_screen_2.png" alt="Кейс 2"
                    data-title="GUNS OF BOOM"
-                   data-desc="Экран получения награды. Разработка концепта, формирование общего визуального стиля и детальная отрисовка всех UI-элементов.">
+                   data-desc="Экран получения награды. Разработка концепта, формирование общего визуального стиля и детальная отрисовка всех UI-элементов."
+                   data-title-en="GUNS OF BOOM"
+                   data-desc-en="Reward screen. Concept development, overall visual style and detailed rendering of every UI element.">
               <img class="slide" src="laptop_screen_3.png" alt="Кейс 3"
                    data-title="GUNS OF BOOM"
-                   data-desc="Главное лобби игры. Поиск визуальных решений, создание концептуального дизайна и финальная отрисовка всех элементов UI.">
+                   data-desc="Главное лобби игры. Поиск визуальных решений, создание концептуального дизайна и финальная отрисовка всех элементов UI."
+                   data-title-en="GUNS OF BOOM"
+                   data-desc-en="Main game lobby. Exploring visual solutions, concept design and final rendering of all UI elements.">
               <img class="slide" src="laptop_screen_4.png" alt="Кейс 4"
                    data-title="DRAGON WARLORDS"
-                   data-desc="Боевой HUD. Полный цикл работы над интерфейсом: от создания первоначального концепта до детальной отрисовки и финальной нарезки ассетов">
+                   data-desc="Боевой HUD. Полный цикл работы над интерфейсом: от создания первоначального концепта до детальной отрисовки и финальной нарезки ассетов"
+                   data-title-en="DRAGON WARLORDS"
+                   data-desc-en="Battle HUD. The full interface cycle: from the initial concept to detailed rendering and final asset slicing.">
               <img class="slide" src="laptop_screen_5.png" alt="Кейс 5"
                    data-title="DRAGON WARLORDS"
-                   data-desc="Экран победы и получения наград. Разработка визуального концепта окна, высокодетализированная отрисовка материалов (металл, дерево, ткань) и финальная нарезка ассетов.">
+                   data-desc="Экран победы и получения наград. Разработка визуального концепта окна, высокодетализированная отрисовка материалов (металл, дерево, ткань) и финальная нарезка ассетов."
+                   data-title-en="DRAGON WARLORDS"
+                   data-desc-en="Victory and rewards screen. Visual concept of the window, highly detailed rendering of materials (metal, wood, fabric) and final asset slicing.">
               <img class="slide" src="laptop_screen_6.png" alt="Кейс 6"
                    data-title="MOBILE SHOOTER"
-                   data-desc="Боевой HUD для мобильного шутера. Полный цикл разработки интерфейса с нуля: создание концепта, поиск минималистичного визуального стиля и финальная отрисовка всех элементов управления.">
+                   data-desc="Боевой HUD для мобильного шутера. Полный цикл разработки интерфейса с нуля: создание концепта, поиск минималистичного визуального стиля и финальная отрисовка всех элементов управления."
+                   data-title-en="MOBILE SHOOTER"
+                   data-desc-en="Battle HUD for a mobile shooter. Full interface development from scratch: concept, a search for a minimalist visual style and final rendering of all controls.">
               <img class="slide" src="laptop_screen_7.png" alt="Кейс 7"
                    data-title="TANK DOMINATION"
-                   data-desc="Экран результатов боя. Разработка концепта и визуального стиля, отрисовка всех элементов (включая медали) и финальная нарезка графики.">
+                   data-desc="Экран результатов боя. Разработка концепта и визуального стиля, отрисовка всех элементов (включая медали) и финальная нарезка графики."
+                   data-title-en="TANK DOMINATION"
+                   data-desc-en="Battle results screen. Concept and visual style development, rendering of every element (medals included) and final asset slicing.">
               <img class="slide" src="laptop_screen_8.png" alt="Кейс 8"
                    data-title="X-MERCS"
-                   data-desc="Интерфейс глобальной карты. Создание визуальных решений с нуля: от поиска оптимальной sci-fi стилистики и первого концепта до финальной, высокодетализированной отрисовки графики">
+                   data-desc="Интерфейс глобальной карты. Создание визуальных решений с нуля: от поиска оптимальной sci-fi стилистики и первого концепта до финальной, высокодетализированной отрисовки графики"
+                   data-title-en="X-MERCS"
+                   data-desc-en="Global map interface. Visual solutions built from scratch: from finding the right sci-fi style and the first concept to final, highly detailed rendering.">
               <img class="slide" src="laptop_screen_9.png" alt="Кейс 9"
                    data-title="IMTANK.COM"
-                   data-desc="Интерфейс Экран выбора измерения. Разработка интерфейса с нуля до финала. Детальная отрисовка графики и проектирование различных состояний, включая дизайн активных и заблокированных порталов.">
+                   data-desc="Интерфейс Экран выбора измерения. Разработка интерфейса с нуля до финала. Детальная отрисовка графики и проектирование различных состояний, включая дизайн активных и заблокированных порталов."
+                   data-title-en="IMTANK.COM"
+                   data-desc-en="Dimension selection screen. Interface design from first concept to final. Detailed rendering and design of multiple states, including active and locked portals.">
               <img class="slide" src="laptop_screen_10.png" alt="Кейс 10"
                    data-title="IMTANK.COM"
-                   data-desc="Попап с персонажем. Разработка UI-концепта модального окна, поиск оптимальной формы и композиции. Полная чистовая отрисовка интерфейса и элементов управления.">
+                   data-desc="Попап с персонажем. Разработка UI-концепта модального окна, поиск оптимальной формы и композиции. Полная чистовая отрисовка интерфейса и элементов управления."
+                   data-title-en="IMTANK.COM"
+                   data-desc-en="Character pop-up. UI concept for a modal window, exploring the best shape and composition. Full final rendering of the interface and controls.">
               <img class="slide" src="laptop_screen_11.png" alt="Кейс 11"
                    data-title="IMTANK.COM"
-                   data-desc="Дизайн игровых тултипов. Разработка структуры, полная чистовая отрисовка всех элементов (иконки, шкалы характеристик, плашки) и финальная вёрстка. Проектирование читаемого отображения параметров для модулей, экипажа и итемов.">
+                   data-desc="Дизайн игровых тултипов. Разработка структуры, полная чистовая отрисовка всех элементов (иконки, шкалы характеристик, плашки) и финальная вёрстка. Проектирование читаемого отображения параметров для модулей, экипажа и итемов."
+                   data-title-en="IMTANK.COM"
+                   data-desc-en="Game tooltips. Structure design, full final rendering of every element (icons, stat bars, badges) and final layout. A clear, readable stat display for modules, crew and items.">
               <img class="slide" src="laptop_screen_12.png" alt="Кейс 12"
                    data-title="IMTANK.COM"
-                   data-desc="Система внутриигровых фильтров. Разработка структуры боковой панели, детальная чистовая отрисовка микро-UI и финальная вёрстка сложных многоуровневых вкладок для удобного взаимодействия.">
+                   data-desc="Система внутриигровых фильтров. Разработка структуры боковой панели, детальная чистовая отрисовка микро-UI и финальная вёрстка сложных многоуровневых вкладок для удобного взаимодействия."
+                   data-title-en="IMTANK.COM"
+                   data-desc-en="In-game filter system. Sidebar structure design, detailed final rendering of micro-UI and layout of complex multi-level tabs for smooth interaction.">
               <img class="slide" src="laptop_screen_13.png" alt="Кейс 13"
                    data-title="ИКОНКИ"
-                   data-desc="Игровые иконки ресурсов. Разработка дизайна и детальная финальная отрисовка в Photoshop с использованием комбинации векторных и растровых инструментов.">
+                   data-desc="Игровые иконки ресурсов. Разработка дизайна и детальная финальная отрисовка в Photoshop с использованием комбинации векторных и растровых инструментов."
+                   data-title-en="ICONS"
+                   data-desc-en="Game resource icons. Design and detailed final rendering in Photoshop using a combination of vector and raster tools.">
               <img class="slide" src="laptop_screen_14.png" alt="Кейс 14"
                    data-title="ИКОНКИ"
-                   data-desc="Игровые иконки ресурсов. Разработка дизайна и детальная финальная отрисовка в Photoshop с использованием комбинации векторных и растровых инструментов.">
+                   data-desc="Игровые иконки ресурсов. Разработка дизайна и детальная финальная отрисовка в Photoshop с использованием комбинации векторных и растровых инструментов."
+                   data-title-en="ICONS"
+                   data-desc-en="Game resource icons. Design and detailed final rendering in Photoshop using a combination of vector and raster tools.">
               <img class="slide" src="laptop_screen_15.png" alt="Кейс 15"
                    data-title="ИКОНКИ"
-                   data-desc="Иконки рангов. Разработка визуальной прогрессии и детальная отрисовка в Photoshop с использованием векторных и растровых инструментов.">
+                   data-desc="Иконки рангов. Разработка визуальной прогрессии и детальная отрисовка в Photoshop с использованием векторных и растровых инструментов."
+                   data-title-en="ICONS"
+                   data-desc-en="Rank icons. Visual progression design and detailed rendering in Photoshop using vector and raster tools.">
               <div class="screen__glare"></div>
               <div class="caption" id="caption" aria-live="polite">
                 <h3 class="caption__title" id="capTitle"></h3>
@@ -125,7 +166,7 @@
           <div class="laptop-shadow"></div>
         </div>
 
-        <button class="arrow arrow--next" id="nextBtn" aria-label="Следующий слайд">
+        <button class="arrow arrow--next" id="nextBtn" aria-label="Следующий слайд" data-i18n-attr="aria-label:next">
           <img src="button_circle.png" alt=""><img class="arrow__icon" src="icon_arrow_right.png" alt="">
         </button>
        </div>
@@ -138,32 +179,32 @@
   <main>
     <!-- ============ НАВЫКИ ============ -->
     <section class="section container" id="skills">
-      <h2 class="h2 reveal">Навыки</h2>
-      <p class="lead reveal" style="--d:.1s">Экспертное владение Adobe Photoshop (векторные и растровые инструменты), знание Figma, нарезка и подготовка графики. Опыт командной разработки через Git, ведение задач и проектной документации.</p>
+      <h2 class="h2 reveal" data-i18n="skills.h">Навыки</h2>
+      <p class="lead reveal" style="--d:.1s" data-i18n="skills.p">Экспертное владение Adobe Photoshop (векторные и растровые инструменты), знание Figma, нарезка и подготовка графики. Опыт командной разработки через Git, ведение задач и проектной документации.</p>
       <ul class="chips reveal" style="--d:.2s">
-        <li>Photoshop</li><li>Figma</li><li>UI-арт</li><li>HUD</li><li>Иконки</li><li>Нарезка</li><li>Git</li><li>Документация</li>
+        <li>Photoshop</li><li>Figma</li><li data-i18n="chip.uiart">UI-арт</li><li>HUD</li><li data-i18n="chip.icons">Иконки</li><li data-i18n="chip.slicing">Нарезка</li><li>Git</li><li data-i18n="chip.docs">Документация</li>
       </ul>
     </section>
 
     <!-- ============ ПРОЕКТЫ ============ -->
     <section class="section container projects" id="projects">
       <div class="projects__text">
-        <h2 class="h2 reveal">Проекты</h2>
+        <h2 class="h2 reveal" data-i18n="projects.h">Проекты</h2>
         <ul class="list">
           <li class="reveal" style="--d:.1s">
             <h3>Guns Of Boom, X-Mercs, IMTANK.COM, Dragon Warlords, Tank&nbsp;Domination</h3>
-            <p>Разработка визуального стиля и концепт-арта интерфейсов, отрисовка UI-арта, игровых иконок и элементов HUD.</p>
+            <p data-i18n="projects.p1">Разработка визуального стиля и концепт-арта интерфейсов, отрисовка UI-арта, игровых иконок и элементов HUD.</p>
           </li>
           <li class="reveal" style="--d:.2s">
-            <h3>Sunshine Bay, Airport City, Загадочный Дом, и&nbsp;др.</h3>
-            <p>Участие в разработке, отрисовка элементов интерфейса, окон, иконок.</p>
+            <h3 data-i18n="projects.h2">Sunshine Bay, Airport City, Загадочный Дом, и&nbsp;др.</h3>
+            <p data-i18n="projects.p2">Участие в разработке, отрисовка элементов интерфейса, окон, иконок.</p>
           </li>
         </ul>
       </div>
-      <div class="tank reveal-tank" id="tank" title="Жми!">
+      <div class="tank reveal-tank" id="tank" title="Жми!" data-i18n-attr="title:tank">
         <div class="tank__glow"></div>
         <div class="tank__body" id="tankBody">
-          <img src="art_tank.png" alt="Игровой арт — танк">
+          <img src="art_tank.png" alt="Игровой арт — танк" data-i18n-attr="alt:tankAlt">
         </div>
         <div class="tank__shadow"></div>
       </div>
@@ -171,38 +212,38 @@
 
     <!-- ============ ОПЫТ ============ -->
     <section class="section container" id="experience">
-      <h2 class="h2 reveal">Опыт работы</h2>
+      <h2 class="h2 reveal" data-i18n="exp.h">Опыт работы</h2>
       <ol class="timeline" id="timeline">
         <li class="timeline__line" aria-hidden="true"><span id="timelineFill"></span></li>
         <li class="tl reveal" style="--d:.05s">
           <span class="tl__years">2023 — 2026</span>
           <h3>Igoshel / Tsoigen — UI Artist / Game UI/UX Designer</h3>
-          <p>Проектирование UI/UX, создание векторных и растровых ассетов, иконок, финальная отрисовка игровых экранов, окон и меню, вёрстка.</p>
+          <p data-i18n="exp.p1">Проектирование UI/UX, создание векторных и растровых ассетов, иконок, финальная отрисовка игровых экранов, окон и меню, вёрстка.</p>
         </li>
         <li class="tl reveal" style="--d:.1s">
           <span class="tl__years">2017 — 2023</span>
-          <h3>Приватный геймдев-проект — Lead UI/UX Game Designer / UI Artist</h3>
-          <p>Полное ведение визуальной части, отрисовка игровых ассетов, иконок, итемов.</p>
+          <h3 data-i18n="exp.h2">Приватный геймдев-проект — Lead UI/UX Game Designer / UI Artist</h3>
+          <p data-i18n="exp.p2">Полное ведение визуальной части, отрисовка игровых ассетов, иконок, итемов.</p>
         </li>
         <li class="tl reveal" style="--d:.15s">
           <span class="tl__years">2013 — 2017</span>
           <h3>Game Insight — UI Artist / 2D Artist</h3>
-          <p>Разработка визуального стиля, дизайн-концептов и финального UI-арта для ключевых тайтлов компании.</p>
+          <p data-i18n="exp.p3">Разработка визуального стиля, дизайн-концептов и финального UI-арта для ключевых тайтлов компании.</p>
         </li>
       </ol>
     </section>
 
     <!-- ============ ЛОГОТИПЫ ============ -->
-    <section class="section container logos" aria-label="Арт">
-      <div class="logo reveal-logo" style="--i:0"><div class="logo__card"><img src="art_logo_1.png" alt="Логотип арт-отдела, вариант 1"><span class="logo__shine"></span></div></div>
-      <div class="logo reveal-logo" style="--i:1"><div class="logo__card"><img src="art_logo_2.png" alt="Логотип арт-отдела, вариант 2"><span class="logo__shine"></span></div></div>
-      <div class="logo reveal-logo" style="--i:2"><div class="logo__card"><img src="art_logo_3.png" alt="Логотип арт-отдела, вариант 3"><span class="logo__shine"></span></div></div>
+    <section class="section container logos" aria-label="Арт" data-i18n-attr="aria-label:art">
+      <div class="logo reveal-logo" style="--i:0"><div class="logo__card"><img src="art_logo_1.png" alt="Логотип арт-отдела, вариант 1" data-i18n-attr="alt:logo1"><span class="logo__shine"></span></div></div>
+      <div class="logo reveal-logo" style="--i:1"><div class="logo__card"><img src="art_logo_2.png" alt="Логотип арт-отдела, вариант 2" data-i18n-attr="alt:logo2"><span class="logo__shine"></span></div></div>
+      <div class="logo reveal-logo" style="--i:2"><div class="logo__card"><img src="art_logo_3.png" alt="Логотип арт-отдела, вариант 3" data-i18n-attr="alt:logo3"><span class="logo__shine"></span></div></div>
     </section>
 
     <!-- ============ ПОРТФОЛИО ============ -->
     <section class="section container portfolio" id="portfolio">
-      <h2 class="h2 reveal">Портфолио</h2>
-      <p class="lead reveal" style="--d:.1s">Здесь вы найдете актуальные дизайн-проекты, над которыми я работал в последнее время. Чтобы оценить реальное качество интерфейсов, пиксельную точность и адаптивность под мобильные устройства, переходите к просмотру исходных макетов напрямую в Figma.</p>
+      <h2 class="h2 reveal" data-i18n="portfolio.h">Портфолио</h2>
+      <p class="lead reveal" style="--d:.1s" data-i18n="portfolio.p">Здесь вы найдете актуальные дизайн-проекты, над которыми я работал в последнее время. Чтобы оценить реальное качество интерфейсов, пиксельную точность и адаптивность под мобильные устройства, переходите к просмотру исходных макетов напрямую в Figma.</p>
       <div class="cta reveal" style="--d:.2s">
         <a class="btn" id="figmaBtn" href="https://www.figma.com/design/pLmFfb3TtL7w7l9OAGFuGl/Portfolio?node-id=0-1&amp;t=KD7dAXByam6TiSFT-1" target="_blank" rel="noopener">
           <span class="btn__label">Go to Figma</span>
@@ -213,8 +254,8 @@
   </main>
 
   <footer class="footer container">
-    <span>© <span id="year">2026</span> Алексей Кривощеков</span>
-    <a href="#top" class="footer__up">Наверх ↑</a>
+    <span>© <span id="year">2026</span> <span data-i18n="name">Алексей Кривощеков</span></span>
+    <a href="#top" class="footer__up" data-i18n="up.link">Наверх ↑</a>
   </footer>
 
   <script src="script.js"></script>

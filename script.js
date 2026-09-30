@@ -15,8 +15,7 @@
   document.body.classList.add('is-loading');
 
   /* ---------- разбивка имени на буквы ---------- */
-  $$('[data-split]').forEach(el => {
-    const text = el.textContent;
+  function splitText(el, text) {
     el.setAttribute('aria-label', text);
     el.textContent = '';
     let i = 0;
@@ -34,7 +33,8 @@
       el.appendChild(w);
       if (wi < arr.length - 1) { el.appendChild(document.createTextNode(' ')); i++; }
     });
-  });
+  }
+  $$('[data-split]').forEach(el => splitText(el, el.textContent.trim()));
   $$('.chips li').forEach((li, i) => li.style.setProperty('--n', i));
 
   /* ---------- прелоадер ---------- */
@@ -77,7 +77,11 @@
   let capSwapT = 0;
   function updateCaption(animated) {
     const s = slides[current];
-    const apply = () => { capTitle.textContent = s.dataset.title || ''; capDesc.textContent = s.dataset.desc || ''; };
+    const en = document.documentElement.lang === 'en';
+    const apply = () => {
+      capTitle.textContent = (en && s.dataset.titleEn) || s.dataset.title || '';
+      capDesc.textContent = (en && s.dataset.descEn) || s.dataset.desc || '';
+    };
     if (!animated || !caption.classList.contains('is-open')) return apply();
     caption.classList.add('is-swap');
     clearTimeout(capSwapT);
@@ -207,6 +211,119 @@
     }
   });
   laptopWrap.addEventListener('touchcancel', () => { sx = null; });
+
+
+  /* ---------- языки: RU / EN ----------
+     Русский текст живёт в разметке. Английский — в словаре EN ниже:
+     элементы помечены data-i18n="ключ" (текст) и data-i18n-attr="атрибут:ключ" (alt, aria-label, title).
+     Тексты слайдов на английском — в атрибутах data-title-en / data-desc-en у картинок.
+     Язык выбирается так: ?lang=en / ?lang=ru в адресе → сохранённый выбор → язык браузера
+     (русский для ru/uk/be/kk, для остальных — английский). */
+  const EN = {
+    'meta.title': 'Alexey Krivoschekov — GameDev UI Designer',
+    'meta.desc': 'Portfolio of Alexey Krivoschekov, a game UI/UX designer.',
+    'name': 'Alexey Krivoschekov',
+    'up': 'Back to top',
+    'contacts': 'Contacts',
+    'cases': 'Case studies',
+    'prev': 'Previous slide',
+    'next': 'Next slide',
+    'skills.h': 'Skills',
+    'skills.p': 'Expert command of Adobe Photoshop (vector and raster tools), proficiency in Figma, asset slicing and graphics preparation. Experienced in team development with Git, task tracking and project documentation.',
+    'chip.uiart': 'UI art',
+    'chip.icons': 'Icons',
+    'chip.slicing': 'Asset slicing',
+    'chip.docs': 'Documentation',
+    'projects.h': 'Projects',
+    'projects.p1': 'Visual style and UI concept art development, UI art, game icons and HUD elements.',
+    'projects.h2': 'Sunshine Bay, Airport City, Mystery Manor and more',
+    'projects.p2': 'Contributed to development: UI elements, windows and icons.',
+    'tank': 'Click me!',
+    'tankAlt': 'Game art — tank',
+    'exp.h': 'Experience',
+    'exp.p1': 'UI/UX design, vector and raster assets, icons, final rendering of game screens, windows and menus, UI layout.',
+    'exp.h2': 'Private game project — Lead UI/UX Game Designer / UI Artist',
+    'exp.p2': 'Full ownership of the visual side: game assets, icons and items.',
+    'exp.p3': 'Visual style, design concepts and final UI art for the company’s key titles.',
+    'art': 'Art',
+    'logo1': 'Art department logo, version 1',
+    'logo2': 'Art department logo, version 2',
+    'logo3': 'Art department logo, version 3',
+    'portfolio.h': 'Portfolio',
+    'portfolio.p': 'Here you’ll find the latest design projects I’ve been working on. To see the real quality of the interfaces, their pixel precision and how they adapt to mobile devices, view the original mockups directly in Figma.',
+    'up.link': 'Back to top ↑'
+  };
+  const RU = {
+    'meta.title': document.title,
+    'meta.desc': ($('meta[name="description"]') || {}).content || ''
+  };
+  // запоминаем русские оригиналы из разметки
+  $$('[data-i18n]').forEach(el => {
+    const k = el.dataset.i18n;
+    if (!(k in RU)) RU[k] = el.hasAttribute('data-split') ? el.getAttribute('aria-label') : el.textContent;
+  });
+  $$('[data-i18n-attr]').forEach(el => el.dataset.i18nAttr.split(';').forEach(pair => {
+    const [attr, k] = pair.split(':');
+    if (!(k in RU)) RU[k] = el.getAttribute(attr) || '';
+  }));
+
+  const langToggle = $('#langToggle'), langLabel = $('#langLabel'), langBox = $('#lang');
+  const langOpts = $$('.lang__opt');
+
+  function setLang(lang, animate) {
+    const dict = lang === 'en' ? EN : RU;
+    const t = k => (k in dict ? dict[k] : RU[k]);
+    const swap = () => {
+      document.documentElement.lang = lang;
+      document.title = t('meta.title');
+      const md = $('meta[name="description"]'); if (md) md.content = t('meta.desc');
+      $$('[data-i18n]').forEach(el => {
+        const v = t(el.dataset.i18n);
+        if (el.hasAttribute('data-split')) { if (el.getAttribute('aria-label') !== v) splitText(el, v); }
+        else if (el.textContent !== v) el.textContent = v;
+      });
+      $$('[data-i18n-attr]').forEach(el => el.dataset.i18nAttr.split(';').forEach(pair => {
+        const [attr, k] = pair.split(':'); el.setAttribute(attr, t(k));
+      }));
+      slides.forEach((s, i) => s.alt = (lang === 'en' ? 'Case ' : 'Кейс ') + (i + 1));
+      dots.forEach((d, i) => d.setAttribute('aria-label', (lang === 'en' ? 'Slide ' : 'Слайд ') + (i + 1)));
+      updateCaption(false);
+      langLabel.textContent = lang.toUpperCase();
+      langOpts.forEach(o => o.setAttribute('aria-checked', String(o.dataset.lang === lang)));
+      langOpts.forEach(o => o.classList.toggle('is-current', o.dataset.lang === lang));
+    };
+    if (animate && !reduced) {
+      document.body.classList.add('lang-fade');
+      setTimeout(() => { swap(); requestAnimationFrame(() => document.body.classList.remove('lang-fade')); }, 180);
+    } else swap();
+    try { localStorage.setItem('lang', lang); } catch (e) {}
+  }
+
+  function openLang(open) {
+    langBox.classList.toggle('is-open', open);
+    langToggle.setAttribute('aria-expanded', String(open));
+  }
+  langToggle.addEventListener('click', e => { e.stopPropagation(); openLang(!langBox.classList.contains('is-open')); });
+  langOpts.forEach(o => o.addEventListener('click', e => {
+    e.stopPropagation();
+    const lang = o.dataset.lang;
+    openLang(false);
+    if (lang !== document.documentElement.lang) setLang(lang, true);
+  }));
+  document.addEventListener('click', e => { if (!langBox.contains(e.target)) openLang(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') openLang(false); });
+
+  // стартовый язык
+  (function initLang() {
+    let saved = null;
+    try { saved = localStorage.getItem('lang'); } catch (e) {}
+    const param = new URLSearchParams(location.search).get('lang');
+    const nav = (navigator.language || 'ru').toLowerCase();
+    const browser = /^(ru|uk|be|kk)/.test(nav) ? 'ru' : 'en';
+    const lang = (param === 'en' || param === 'ru') ? param : (saved === 'en' || saved === 'ru') ? saved : browser;
+    if (lang === 'en') setLang('en', false);
+    else { langOpts.forEach(o => o.classList.toggle('is-current', o.dataset.lang === 'ru')); langOpts.forEach(o => o.setAttribute('aria-checked', String(o.dataset.lang === 'ru'))); }
+  })();
 
   /* ---------- наклон ноутбука за курсором ---------- */
   const laptop = $('#laptop');
