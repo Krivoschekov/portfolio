@@ -69,8 +69,34 @@
   const slides = $$('.slide');
   const dotsWrap = $('#dots');
   const glare = $('.screen__glare'), scan = $('.screen__scan');
-  let current = 0, busy = false, timer = null;
+  let current = 0, timer = null;
+  const screenEl = $('#screen');
+
+  /* плашка с названием и описанием экрана */
+  const caption = $('#caption'), capTitle = $('#capTitle'), capDesc = $('#capDesc');
+  let capSwapT = 0;
+  function updateCaption(animated) {
+    const s = slides[current];
+    const apply = () => { capTitle.textContent = s.dataset.title || ''; capDesc.textContent = s.dataset.desc || ''; };
+    if (!animated || !caption.classList.contains('is-open')) return apply();
+    caption.classList.add('is-swap');
+    clearTimeout(capSwapT);
+    capSwapT = setTimeout(() => { apply(); caption.classList.remove('is-swap'); }, 220);
+  }
+  let capHideT = 0;
+  function showCaption(autoHideMs) {
+    caption.classList.add('is-open');
+    showcase.classList.add('is-paused');
+    clearTimeout(capHideT);
+    if (autoHideMs) capHideT = setTimeout(hideCaption, autoHideMs);
+  }
+  function hideCaption() {
+    clearTimeout(capHideT);
+    caption.classList.remove('is-open');
+  }
   document.documentElement.style.setProperty('--autoplay', AUTOPLAY_MS + 'ms');
+
+  updateCaption(false);
 
   const dots = slides.map((_, i) => {
     const b = document.createElement('button');
@@ -85,14 +111,17 @@
 
   const restart = el => { el.classList.remove('run'); void el.offsetWidth; el.classList.add('run'); };
 
+  let finishT = 0;
   function go(index, dir) {
     index = (index + slides.length) % slides.length;
-    if (busy || index === current) return;
-    busy = true;
+    if (index === current) return;
+    // можно листать, не дожидаясь конца прошлой анимации: сбрасываем её и начинаем новую
+    clearTimeout(finishT);
     const prev = slides[current], next = slides[index];
     const d = dir > 0 ? 'next' : 'prev';
 
     slides.forEach(s => s.className = 'slide');
+    void screenEl.offsetWidth; // перезапуск CSS-анимаций
     prev.classList.add('is-leaving', 'leave-' + d);
     next.classList.add('is-active', 'enter-' + d);
     restart(glare); restart(scan);
@@ -100,11 +129,11 @@
     dots[current].classList.remove('is-active');
     dots[index].classList.add('is-active');
     current = index;
+    updateCaption(true);
 
-    setTimeout(() => {
+    finishT = setTimeout(() => {
       prev.className = 'slide';
       next.className = 'slide is-active';
-      busy = false;
     }, reduced ? 0 : ANIM_MS);
     startAutoplay();
   }
@@ -126,6 +155,11 @@
   const laptopWrap = $('#laptopWrap');
   laptopWrap.addEventListener('mouseenter', () => showcase.classList.add('is-paused'));
   laptopWrap.addEventListener('mouseleave', () => { showcase.classList.remove('is-paused'); startAutoplay(); });
+  // плашка: на компьютере — при наведении на экран ноутбука
+  if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    screenEl.addEventListener('mouseenter', () => showCaption());
+    screenEl.addEventListener('mouseleave', hideCaption);
+  }
 
   // клавиатура
   document.addEventListener('keydown', e => {
@@ -139,11 +173,21 @@
   // свайп
   let sx = null, sy = null;
   laptopWrap.addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+  let lastTap = 0;
   laptopWrap.addEventListener('touchend', e => {
     if (sx === null) return;
-    const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
-    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) go(current + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
+    const t = e.changedTouches[0];
+    const dx = t.clientX - sx, dy = t.clientY - sy;
     sx = null;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) { go(current + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1); return; }
+    // тап по экрану: двойной — показать плашку на 10 с, одиночный при открытой — спрятать
+    if (Math.abs(dx) > 10 || Math.abs(dy) > 10 || !screenEl.contains(e.target)) return;
+    const now = Date.now();
+    if (caption.classList.contains('is-open')) { hideCaption(); showcase.classList.remove('is-paused'); startAutoplay(); lastTap = 0; return; }
+    if (now - lastTap < 320) {
+      showCaption(10000); lastTap = 0;
+      setTimeout(() => { if (!caption.classList.contains('is-open')) { showcase.classList.remove('is-paused'); startAutoplay(); } }, 10050);
+    } else lastTap = now;
   });
 
   /* ---------- наклон ноутбука за курсором ---------- */
@@ -414,6 +458,46 @@
     MUZZLES.forEach(([fx, fy], i) =>
       setTimeout(() => shot(r.left + r.width * fx, r.top + r.height * fy, scale), i * 90));
   });
+
+
+  /* ---------- выхлоп за танком ----------
+     Полупрозрачные бело-серые квадраты поднимаются из-за кормы и тают,
+     не долетая до верха танка. Работает, только пока танк на экране. */
+  (function tankExhaust() {
+    if (reduced) return;
+    const tank = $('#tank');
+    const SRC = [[.80, .44], [.84, .45], [.88, .47]];              // точки выхлопа в долях картинки
+    const COLS = ['#e8edf5', '#c9d2e0', '#aab6c9'];
+    let visible = false, t = 0;
+    new IntersectionObserver(([e]) => {
+      visible = e.isIntersecting;
+      if (visible && !t) loop();
+    }).observe(tank);
+    function puff() {
+      const w = tankImg.offsetWidth, h = tankImg.offsetHeight;
+      if (!w) return;
+      const [fx, fy] = SRC[(Math.random() * SRC.length) | 0];
+      const u = w / 666;
+      const sz = Math.round((8 + Math.random() * 12) * u);
+      const el = document.createElement('span');
+      el.className = 'exhaust';
+      el.style.cssText = `width:${sz}px;height:${sz}px;left:${fx * w - sz / 2}px;top:${fy * h - sz / 2}px;background:${COLS[(Math.random() * COLS.length) | 0]}`;
+      tank.insertBefore(el, tank.firstChild);            // позади корпуса
+      const rise = h * (.22 + Math.random() * .14);      // тает ниже верха танка
+      const drift = (10 + Math.random() * 30) * u;       // чуть сносит назад
+      el.animate([
+        { transform: 'translate(0,0) scale(.6)', opacity: 0 },
+        { transform: `translate(${drift * .25}px, ${-rise * .2}px) scale(1)`, opacity: .45 + Math.random() * .15, offset: .18 },
+        { transform: `translate(${drift}px, ${-rise}px) scale(1.5)`, opacity: 0 }
+      ], { duration: 1300 + Math.random() * 700, easing: 'cubic-bezier(.2,.6,.4,1)' }).onfinish = () => el.remove();
+    }
+    function loop() {
+      if (!visible || document.hidden) { t = 0; return; }
+      puff();
+      t = setTimeout(loop, 110 + Math.random() * 130);
+    }
+    document.addEventListener('visibilitychange', () => { if (!document.hidden && visible && !t) loop(); });
+  })();
 
   /* ---------- логотипы: 3D-наклон и блик ---------- */
   if (finePointer && !reduced) {
