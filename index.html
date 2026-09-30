@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Алексей Кривощеков — GameDev UI Designer</title>
+  <meta name="description" content="Портфолио Алексея Кривощекова, UI/UX дизайнера игровых интерфейсов.">
+  <link rel="icon" href="avatar.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Roboto+Condensed:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- прелоадер -->
+  <div class="loader" id="loader" aria-hidden="true">
+    <div class="loader__bar"><span></span></div>
+    <div class="loader__text">LOADING<span class="loader__pct" id="loaderPct">0</span>%</div>
+  </div>
+
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- живой фон: градиентные пятна + частицы (на всю страницу) -->
+  <div class="bg" aria-hidden="true">
+    <div class="bg__blobs" id="blobs">
+      <i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i>
+      <i class="blob b4"></i><i class="blob b5"></i><i class="blob b6"></i>
+    </div>
+    <canvas class="bg__fx" id="fx"></canvas>
+    <canvas class="bg__lcd" id="lcd"></canvas>
+    <canvas class="bg__glitch" id="glitch"></canvas>
+    <div class="bg__vignette"></div>
+  </div>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" id="top">
+    <div class="hero__glow" aria-hidden="true"></div>
+
+    <div class="container hero__inner">
+      <div class="topbar">
+        <a class="profile__avatar" href="#top" aria-label="Наверх"><img src="avatar.png" alt="Алексей Кривощеков"></a>
+        <div class="topbar__main">
+          <div class="topbar__row">
+            <h1 class="profile__name" data-split>Алексей Кривощеков</h1>
+            <nav class="socials" aria-label="Контакты">
+              <a class="social" href="https://t.me/nikto_nigde_nikogda" target="_blank" rel="noopener" aria-label="Telegram">
+                <img src="button_circle.png" alt=""><img class="social__icon" src="icon_telegram.png" alt="">
+              </a>
+              <a class="social" href="https://www.linkedin.com/in/alexey-krivoschekov-216692b4/" target="_blank" rel="noopener" aria-label="LinkedIn">
+                <img src="button_circle.png" alt=""><img class="social__icon" src="icon_linkedin.png" alt="">
+              </a>
+            </nav>
+          </div>
+          <span class="profile__role">GameDev UI Designer</span>
+        </div>
+      </div>
+
+      <!-- ноутбук со слайдером -->
+      <section class="showcase" aria-roledescription="carousel" aria-label="Кейсы">
+       <div class="stage">
+        <button class="arrow arrow--prev" id="prevBtn" aria-label="Предыдущий слайд">
+          <img src="button_circle.png" alt=""><img class="arrow__icon" src="icon_arrow_right.png" alt="">
+        </button>
+
+        <div class="laptop-wrap" id="laptopWrap">
+          <div class="laptop" id="laptop">
+            <img class="laptop__frame" src="laptop.png" alt="">
+            <div class="laptop__screen" id="screen">
+              <!-- слайды: laptop_screen_1..9.png (1318×825); чтобы добавить ещё — допишите строку <img class="slide" ...> -->
+              <img class="slide is-active" src="laptop_screen_1.png" alt="Кейс 1">
+              <img class="slide" src="laptop_screen_2.png" alt="Кейс 2">
+              <img class="slide" src="laptop_screen_3.png" alt="Кейс 3">
+              <img class="slide" src="laptop_screen_4.png" alt="Кейс 4">
+              <img class="slide" src="laptop_screen_5.png" alt="Кейс 5">
+              <img class="slide" src="laptop_screen_6.png" alt="Кейс 6" decoding="async">
+              <img class="slide" src="laptop_screen_7.png" alt="Кейс 7" decoding="async">
+              <img class="slide" src="laptop_screen_8.png" alt="Кейс 8" decoding="async">
+              <img class="slide" src="laptop_screen_9.png" alt="Кейс 9" decoding="async">
+              <div class="screen__glare"></div>
+              <div class="screen__scan"></div>
+            </div>
+          </div>
+          <div class="laptop-shadow"></div>
+        </div>
+
+        <button class="arrow arrow--next" id="nextBtn" aria-label="Следующий слайд">
+          <img src="button_circle.png" alt=""><img class="arrow__icon" src="icon_arrow_right.png" alt="">
+        </button>
+       </div>
+
+        <div class="dots" id="dots" role="tablist"></div>
+      </section>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============ НАВЫКИ ============ -->
+    <section class="section container" id="skills">
+      <h2 class="h2 reveal">Навыки</h2>
+      <p class="lead reveal" style="--d:.1s">Экспертное владение Adobe Photoshop (векторные и растровые инструменты), знание Figma, нарезка и подготовка графики. Опыт командной разработки через Git, ведение задач и проектной документации.</p>
+      <ul class="chips reveal" style="--d:.2s">
+        <li>Photoshop</li><li>Figma</li><li>UI-арт</li><li>HUD</li><li>Иконки</li><li>Нарезка</li><li>Git</li><li>Документация</li>
+      </ul>
+    </section>
+
+    <!-- ============ ПРОЕКТЫ ============ -->
+    <section class="section container projects" id="projects">
+      <div class="projects__text">
+        <h2 class="h2 reveal">Проекты</h2>
+        <ul class="list">
+          <li class="reveal" style="--d:.1s">
+            <h3>Guns Of Boom, X-Mercs, IMTANK.COM, Dragon Warlords, Tank&nbsp;Domination</h3>
+            <p>Разработка визуального стиля и концепт-арта интерфейсов, отрисовка UI-арта, игровых иконок и элементов HUD.</p>
+          </li>
+          <li class="reveal" style="--d:.2s">
+            <h3>Sunshine Bay, Airport City, Загадочный Дом, и&nbsp;др.</h3>
+            <p>Участие в разработке, отрисовка элементов интерфейса, окон, иконок.</p>
+          </li>
+        </ul>
+      </div>
+      <div class="tank reveal-tank" id="tank" title="Жми!">
+        <div class="tank__glow"></div>
+        <div class="tank__body" id="tankBody">
+          <img src="art_tank.png" alt="Игровой арт — танк">
+        </div>
+        <div class="tank__shadow"></div>
+      </div>
+    </section>
+
+    <!-- ============ ОПЫТ ============ -->
+    <section class="section container" id="experience">
+      <h2 class="h2 reveal">Опыт работы</h2>
+      <ol class="timeline" id="timeline">
+        <li class="timeline__line" aria-hidden="true"><span id="timelineFill"></span></li>
+        <li class="tl reveal" style="--d:.05s">
+          <span class="tl__years">2023 — 2026</span>
+          <h3>Igoshel / Tsoigen — UI Artist / Game UI/UX Designer</h3>
+          <p>Проектирование UI/UX, создание векторных и растровых ассетов, иконок, финальная отрисовка игровых экранов, окон и меню, вёрстка.</p>
+        </li>
+        <li class="tl reveal" style="--d:.1s">
+          <span class="tl__years">2017 — 2023</span>
+          <h3>Приватный геймдев-проект — Lead UI/UX Game Designer / UI Artist</h3>
+          <p>Полное ведение визуальной части, отрисовка игровых ассетов, иконок, итемов.</p>
+        </li>
+        <li class="tl reveal" style="--d:.15s">
+          <span class="tl__years">2013 — 2017</span>
+          <h3>Game Insight — UI Artist / 2D Artist</h3>
+          <p>Разработка визуального стиля, дизайн-концептов и финального UI-арта для ключевых тайтлов компании.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ============ ЛОГОТИПЫ ============ -->
+    <section class="section container logos" aria-label="Арт">
+      <div class="logo reveal-logo" style="--i:0"><div class="logo__card"><img src="art_logo_1.png" alt="Логотип арт-отдела, вариант 1"><span class="logo__shine"></span></div></div>
+      <div class="logo reveal-logo" style="--i:1"><div class="logo__card"><img src="art_logo_2.png" alt="Логотип арт-отдела, вариант 2"><span class="logo__shine"></span></div></div>
+      <div class="logo reveal-logo" style="--i:2"><div class="logo__card"><img src="art_logo_3.png" alt="Логотип арт-отдела, вариант 3"><span class="logo__shine"></span></div></div>
+    </section>
+
+    <!-- ============ ПОРТФОЛИО ============ -->
+    <section class="section container portfolio" id="portfolio">
+      <h2 class="h2 reveal">Портфолио</h2>
+      <p class="lead reveal" style="--d:.1s">Здесь вы найдете актуальные дизайн-проекты, над которыми я работал в последнее время. Чтобы оценить реальное качество интерфейсов, пиксельную точность и адаптивность под мобильные устройства, переходите к просмотру исходных макетов напрямую в Figma.</p>
+      <div class="cta reveal" style="--d:.2s">
+        <a class="btn" id="figmaBtn" href="https://www.figma.com/design/pLmFfb3TtL7w7l9OAGFuGl/Portfolio?node-id=0-1&amp;t=KD7dAXByam6TiSFT-1" target="_blank" rel="noopener">
+          <span class="btn__label">Go to Figma</span>
+          <span class="btn__shine"></span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer container">
+    <span>© <span id="year">2026</span> Алексей Кривощеков</span>
+    <a href="#top" class="footer__up">Наверх ↑</a>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
