@@ -289,13 +289,16 @@ ul, ol { list-style: none; }
 @keyframes shadowPulse { 50% { transform: scaleX(.9); opacity: .7; } }
 .reveal-tank { opacity: 0; transform: translateX(22%); transition: opacity 1s ease, transform 1.4s cubic-bezier(.34, 1.4, .64, 1); }
 .reveal-tank.in { opacity: 1; transform: none; }
+/* иконки Telegram и LinkedIn чуть меньше круга-подложки */
+.social img.social__icon { inset: 11%; width: 78%; height: 78%; }
+
 /* выбор языка */
 .lang { position: relative; }
 .lang__toggle { cursor: pointer; }
 .is-ready .lang .lang__toggle { animation-delay: 1.3s; }
 .lang__label {
   position: absolute; inset: 0; display: grid; place-items: center;
-  font-family: "Russo One", sans-serif; font-size: clamp(12px, .78vw, 16px); letter-spacing: .02em;
+  font-family: "Russo One", sans-serif; font-size: clamp(13px, .9vw, 18px); letter-spacing: .02em;
   color: #1a406b; pointer-events: none;
   padding-top: 2px; /* подпись чуть ниже центра — оптически ровнее */
 }
@@ -328,7 +331,7 @@ ul, ol { list-style: none; }
 @media (max-width: 560px) {
   .social, .arrow, .lang__opt { width: 34px; }
   .socials { gap: 6px; }
-  .lang__label { font-size: 11px; }
+  .lang__label { font-size: 12px; }
 }
 
 /* плашка с описанием экрана */
