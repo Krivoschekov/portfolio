@@ -172,26 +172,19 @@
 
   // мобильные: свайп влево/вправо и тап для плашки
   // Свайп срабатывает сразу по ходу движения пальца (не дожидаясь отпускания),
-  // а короткий резкий «флик» засчитывается даже на небольшом расстоянии.
-  let sx = null, sy = null, st = 0, axis = null, swiped = false, dragEl = null;
-  const resetDrag = () => {
-    if (dragEl) { dragEl.style.transition = 'transform .25s var(--ease-out)'; dragEl.style.transform = ''; const el = dragEl; setTimeout(() => el.style.transition = '', 260); }
-    dragEl = null;
-  };
+  // а короткий резкий «флик» засчитывается даже на небольшом расстоянии. Картинка за пальцем не тянется.
+  let sx = null, sy = null, st = 0, axis = null, swiped = false;
   laptopWrap.addEventListener('touchstart', e => {
     const t = e.touches[0];
     sx = t.clientX; sy = t.clientY; st = performance.now(); axis = null; swiped = false;
-    dragEl = slides[current];
   }, { passive: true });
   laptopWrap.addEventListener('touchmove', e => {
     if (sx === null || swiped) return;
     const t = e.touches[0], dx = t.clientX - sx, dy = t.clientY - sy;
     if (!axis && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
     if (axis !== 'x') return;
-    // лёгкий «хвост» за пальцем, чтобы свайп ощущался живым
-    if (dragEl) dragEl.style.transform = `translateX(${dx * .25}px)`;
     if (Math.abs(dx) > Math.min(70, laptopWrap.offsetWidth * .18)) {
-      swiped = true; if (dragEl) { dragEl.style.transform = ''; dragEl = null; }
+      swiped = true;
       go(current + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
     }
   }, { passive: true });
@@ -203,10 +196,8 @@
     if (swiped) return;
     // быстрый флик
     if (axis === 'x' && Math.abs(dx) > 24 && Math.abs(dx) / dt > .35) {
-      if (dragEl) { dragEl.style.transform = ''; dragEl = null; }
       go(current + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1); return;
     }
-    resetDrag();
     // тап по экрану: показать плашку (сама спрячется через 10 с) / спрятать
     if (Math.abs(dx) > 10 || Math.abs(dy) > 10 || dt > 500 || !screenEl.contains(e.target)) return;
     if (caption.classList.contains('is-open')) { hideCaption(); showcase.classList.remove('is-paused'); startAutoplay(); }
@@ -215,7 +206,7 @@
       setTimeout(() => { if (!caption.classList.contains('is-open')) { showcase.classList.remove('is-paused'); startAutoplay(); } }, 10050);
     }
   });
-  laptopWrap.addEventListener('touchcancel', () => { sx = null; resetDrag(); });
+  laptopWrap.addEventListener('touchcancel', () => { sx = null; });
 
   /* ---------- наклон ноутбука за курсором ---------- */
   const laptop = $('#laptop');
