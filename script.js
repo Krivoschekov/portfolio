@@ -170,25 +170,52 @@
     if (e.key === 'ArrowLeft') go(current - 1, -1);
   });
 
-  // свайп
-  let sx = null, sy = null;
-  laptopWrap.addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
-  let lastTap = 0;
+  // мобильные: свайп влево/вправо и тап для плашки
+  // Свайп срабатывает сразу по ходу движения пальца (не дожидаясь отпускания),
+  // а короткий резкий «флик» засчитывается даже на небольшом расстоянии.
+  let sx = null, sy = null, st = 0, axis = null, swiped = false, dragEl = null;
+  const resetDrag = () => {
+    if (dragEl) { dragEl.style.transition = 'transform .25s var(--ease-out)'; dragEl.style.transform = ''; const el = dragEl; setTimeout(() => el.style.transition = '', 260); }
+    dragEl = null;
+  };
+  laptopWrap.addEventListener('touchstart', e => {
+    const t = e.touches[0];
+    sx = t.clientX; sy = t.clientY; st = performance.now(); axis = null; swiped = false;
+    dragEl = slides[current];
+  }, { passive: true });
+  laptopWrap.addEventListener('touchmove', e => {
+    if (sx === null || swiped) return;
+    const t = e.touches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+    if (!axis && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+    if (axis !== 'x') return;
+    // лёгкий «хвост» за пальцем, чтобы свайп ощущался живым
+    if (dragEl) dragEl.style.transform = `translateX(${dx * .25}px)`;
+    if (Math.abs(dx) > Math.min(70, laptopWrap.offsetWidth * .18)) {
+      swiped = true; if (dragEl) { dragEl.style.transform = ''; dragEl = null; }
+      go(current + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
+    }
+  }, { passive: true });
   laptopWrap.addEventListener('touchend', e => {
     if (sx === null) return;
     const t = e.changedTouches[0];
-    const dx = t.clientX - sx, dy = t.clientY - sy;
+    const dx = t.clientX - sx, dy = t.clientY - sy, dt = performance.now() - st;
     sx = null;
-    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) { go(current + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1); return; }
-    // тап по экрану: двойной — показать плашку на 10 с, одиночный при открытой — спрятать
-    if (Math.abs(dx) > 10 || Math.abs(dy) > 10 || !screenEl.contains(e.target)) return;
-    const now = Date.now();
-    if (caption.classList.contains('is-open')) { hideCaption(); showcase.classList.remove('is-paused'); startAutoplay(); lastTap = 0; return; }
-    if (now - lastTap < 320) {
-      showCaption(10000); lastTap = 0;
+    if (swiped) return;
+    // быстрый флик
+    if (axis === 'x' && Math.abs(dx) > 24 && Math.abs(dx) / dt > .35) {
+      if (dragEl) { dragEl.style.transform = ''; dragEl = null; }
+      go(current + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1); return;
+    }
+    resetDrag();
+    // тап по экрану: показать плашку (сама спрячется через 10 с) / спрятать
+    if (Math.abs(dx) > 10 || Math.abs(dy) > 10 || dt > 500 || !screenEl.contains(e.target)) return;
+    if (caption.classList.contains('is-open')) { hideCaption(); showcase.classList.remove('is-paused'); startAutoplay(); }
+    else {
+      showCaption(10000);
       setTimeout(() => { if (!caption.classList.contains('is-open')) { showcase.classList.remove('is-paused'); startAutoplay(); } }, 10050);
-    } else lastTap = now;
+    }
   });
+  laptopWrap.addEventListener('touchcancel', () => { sx = null; resetDrag(); });
 
   /* ---------- наклон ноутбука за курсором ---------- */
   const laptop = $('#laptop');
